@@ -1,7 +1,13 @@
+import time
+
+import allure
+import pytest
+from allure_commons.types import AttachmentType
+
 from src.library.config_helpers import get_base_url
 from src.locators.HomePageLocators import HomePageLocators
 from src.library.CommonFunc import CommonFunc
-from src.library.ReadExcelFile import read_excel_file
+from src.library.ReadExcelFile import read_test_data_from_excel as testdata
 from src.library.config_helpers import get_testdata_path
 
 
@@ -28,16 +34,22 @@ class HomePage(HomePageLocators):
     #     check_value = 'Dashboard'
     #     self.common.verify_page(self.VERIFY_HOMEPAGE, check_value)
 
+    # @pytest.mark.parametrize("username, password",
+    #                          testdata.read_excel_file(get_testdata_path(), "loginDetails", "admin"))
+
     def do_login(self):
-        search_criteria = 'admin'
-        path = get_testdata_path()
-        sheet_name = 'loginDetails'
-        login_details = read_excel_file(path, sheet_name, search_criteria)
+        # search_criteria = 'admin'
+        # path = get_testdata_path()
+        # sheet_name = 'loginDetails'
+        # login_details = testdata.read_excel_file(path, sheet_name, search_criteria)
 
         self.driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
         self.driver.maximize_window()
-        self.common.wait_and_input_text(self.INPUT_USERNAME, login_details[0])
-        self.common.wait_and_input_text(self.INPUT_PASSWORD, login_details[1])
+        self.common.wait_and_input_text(self.INPUT_USERNAME, 'Admin')
+        self.common.wait_and_input_text(self.INPUT_PASSWORD, 'admin1')
         self.common.wait_and_click(self.LOGIN_SUBMIT_BUTTON)
+        time.sleep(2)
+        allure.attach(self.driver.get_screenshot_as_png(), name='login error',
+                      attachment_type=AttachmentType.PNG)
         check_value = 'Dashboard'
         self.common.verify_page(self.VERIFY_HOMEPAGE, check_value)

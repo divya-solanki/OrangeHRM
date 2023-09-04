@@ -26,10 +26,10 @@ class Claim(ClaimLocators):
         if no_of_records > 1:
             for x in range(1,no_of_records):
                 employee_name = self.driver.find_element(By.XPATH,
-                                                         self.employee_name_path_1+ str(x) + self.employee_name_path_2).text
+                                                         "//div[@class = 'oxd-table-body']/div[" + str(x) + "]/div[@role='row']/div[2]/div").text
                 print(employee_name)
-                if employee_name == 'Darshan Raval':
-                    self.driver.find_element(By.XPATH, self.view_details_button_1 + str(x) + self.view_details_button_2).click()
+                if employee_name == 'sai Raval':
+                    self.driver.find_element(By.XPATH, "//div[@class='oxd-table-body']/div[" + str(x) + "]/div[@role ='row']/div[9]/div/button").click()
                     time.sleep((5))
                     break
         else:
